@@ -9,11 +9,15 @@ const loggerMap = {
   [SYSID.PRODUCTION]: ProductionLogger,
 };
 
+let loggerInstance: LocalLogger | ProductionLogger;
+
 export class LoggerFactory {
   static getInstance(
     loggerOptions: LoggerOptions,
   ): LocalLogger | ProductionLogger {
-    const instance = loggerMap[SYSTEM_ID];
-    return new instance(loggerOptions);
+    if (!loggerInstance) {
+      loggerInstance = new loggerMap[SYSTEM_ID](loggerOptions);
+    }
+    return loggerInstance;
   }
 }

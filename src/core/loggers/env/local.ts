@@ -1,10 +1,12 @@
+/* eslint-disable @typescript-eslint/naming-convention */
 /* eslint-disable no-console */
 import { Logger, LoggerOptions, QueryRunner } from 'typeorm';
 import { createLogger, Logger as WinstonLogger, format } from 'winston';
-
+import * as LogstashTransport from 'winston-logstash/lib/winston-logstash-latest';
 import { Format } from 'logform';
 import { LoggerLevel } from '@core/type/logger-level';
 import * as DailyRotateFile from 'winston-daily-rotate-file';
+import { Console } from 'winston/lib/winston/transports';
 /**
  * Custom file logger
  */
@@ -20,16 +22,35 @@ export class LocalLogger implements Logger {
       ({ message, level, timestamp }) => `[${timestamp}][${level}]: ${message}`,
     );
     const options = (filename: string) => {
-      const transport = new DailyRotateFile({
-        filename: filename + '-%DATE%.log',
-        datePattern: 'YYYY-MM-DD',
-        zippedArchive: true,
-        maxSize: '50m',
-        maxFiles: '15',
-      });
+      const transports = [
+        new DailyRotateFile({
+          filename: filename + '-%DATE%.log',
+          datePattern: 'DD-MM-YYYY',
+          zippedArchive: true,
+          maxSize: '50m',
+          maxFiles: '15',
+        }),
+        new Console({
+          format: format.combine(
+            format.simple(),
+            format.splat(),
+            format.timestamp({
+              format: 'DD-MM-YYYY HH:mm:ss',
+            }),
+            format.colorize(),
+            this.customFormat,
+          ),
+        }),
+
+        new LogstashTransport({
+          port: process.env.LOGSTASH_PORT,
+          node_name: process.env.LOGSTASH_NODE_NAME,
+          host: process.env.LOGSTASH_HOST,
+        }),
+      ];
 
       return {
-        transports: transport,
+        transports,
         format: this.customFormat,
       };
     };
@@ -115,7 +136,6 @@ export class LocalLogger implements Logger {
         if (this.isLevelAllowed('warn')) this.coreWrite(level, message);
         break;
       case 'error':
-        console.log(message);
         if (this.isLevelAllowed('error')) this.coreWrite(level, message);
         break;
     }
