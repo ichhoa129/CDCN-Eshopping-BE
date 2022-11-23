@@ -1,3 +1,4 @@
+import { LoggerOptions } from 'typeorm';
 import { LocalLogger } from './local';
 
 /**
@@ -5,5 +6,7 @@ import { LocalLogger } from './local';
  * Note: Should replace with 3rd party log tracking to
  */
 export class ProductionLogger extends LocalLogger {
-  //
+  constructor(loggerOptions: LoggerOptions) {
+    super(loggerOptions);
+  }
 }

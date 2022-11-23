@@ -54,7 +54,8 @@
     "typeorm": "0.3.7",
     "typeorm-seeding": "^1.6.1",
     "winston": "^3.3.3",
-    "winston-daily-rotate-file": "^4.5.5"
+    "winston-daily-rotate-file": "^4.5.5",
+    "winston-logstash": "^1.0.2"
   },
   "devDependencies": {
     "@commitlint/cli": "^17.0.3",
