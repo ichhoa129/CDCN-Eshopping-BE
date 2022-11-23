@@ -28,15 +28,11 @@ export class GlobalExceptionsFilter implements ExceptionFilter {
     const response = ctx.getResponse();
     const statusCode = exception.getStatus();
     const customResponse: any = exception.getResponse();
-    const serverErrors = [500, 501, 502, 503, 504, 505, 506, 507, 508, 509];
     const message =
       customResponse || response.message || 'Unknown server errors';
 
-    if (serverErrors.includes(statusCode))
-      ProjectLogger.exception(exception.stack);
-    else if (SYSTEM_ID == SYSID.LOCALHOST) {
-      ProjectLogger.info(exception.stack);
-    }
+    ProjectLogger.exception(exception.stack);
+
     return response.status(exception.getStatus()).json({
       statusCode,
       message,

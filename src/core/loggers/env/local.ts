@@ -42,11 +42,11 @@ export class LocalLogger implements Logger {
           ),
         }),
 
-        new LogstashTransport({
-          port: process.env.LOGSTASH_PORT,
-          node_name: process.env.LOGSTASH_NODE_NAME,
-          host: process.env.LOGSTASH_HOST,
-        }),
+        // new LogstashTransport({
+        //   port: process.env.LOGSTASH_PORT,
+        //   node_name: process.env.LOGSTASH_NODE_NAME,
+        //   host: process.env.LOGSTASH_HOST,
+        // }),
       ];
 
       return {
