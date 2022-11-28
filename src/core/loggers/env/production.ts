@@ -1,0 +1,12 @@
+import { LoggerOptions } from 'typeorm';
+import { LocalLogger } from './local';
+
+/**
+ * Custom file logger for production
+ * Note: Should replace with 3rd party log tracking to
+ */
+export class ProductionLogger extends LocalLogger {
+  constructor(loggerOptions: LoggerOptions) {
+    super(loggerOptions);
+  }
+}

@@ -1,0 +1,27 @@
+{
+  "include": ["./**/*.ts"],
+  "compilerOptions": {
+    "module": "commonjs",
+    "declaration": false,
+    "emitDecoratorMetadata": true,
+    "experimentalDecorators": true,
+    "importHelpers": true,
+    "target": "es2015",
+    "lib": ["es2017", "dom"],
+    "sourceMap": true,
+    "outDir": "./dist",
+    "baseUrl": "./",
+    "skipLibCheck": true,
+    "skipDefaultLibCheck": true,
+    "paths": {
+      "@app/*": ["src/modules/*"],
+      "@config/*": ["src/config/*"],
+      "@core/*": ["src/core/*"],
+    }
+  },
+  "exclude": [
+    "node_modules",
+    "dist",
+    "logs",
+  ]
+}
