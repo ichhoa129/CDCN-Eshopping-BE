@@ -32,6 +32,11 @@ export const JWT = {
   EXPIRES_IN: env.JWT_EXPIRES_IN || '1d',
 };
 
+export const SENTRY_DSN = env.SENTRY_DSN;
+export const SENTRY_TRACE_SAMPLE_RATE = parseFloat(
+  env.SENTRY_TRACE_SAMPLE_RATE || '0.1',
+);
+
 function getLogLevel() {
   try {
     return JSON.parse(env.SYSTEM_LOG_INFO);
