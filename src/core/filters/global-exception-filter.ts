@@ -1,4 +1,5 @@
 import { SYSTEM_ID } from '@config/env';
+import { Sentry, transaction } from '@config/sentry.config';
 import { SYSID } from '@core/constants/system';
 import {
   ExceptionFilter,
@@ -14,6 +15,9 @@ import { ProjectLogger } from '../loggers/log-service';
 @Catch()
 export class GlobalExceptionsFilter implements ExceptionFilter {
   catch(exception: any, host: ArgumentsHost): any {
+    Sentry.captureException(exception);
+    transaction.finish();
+
     if (exception instanceof HttpException) {
       return this.handleHttpException(exception, host);
     }
