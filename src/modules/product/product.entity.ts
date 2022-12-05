@@ -11,6 +11,7 @@ import { BaseEntity } from '@core/base/base.entity';
 import { Category } from '@app/category/category.entity';
 import { PRODUCT_STATUS } from 'src/common/enums/product.enum';
 import { ProductSize } from '@app/product_size/product_size.entity';
+import { Discount } from '@app/discount/discount.entity';
 
 @Entity('products')
 export class Product extends BaseEntity {
@@ -85,4 +86,7 @@ export class Product extends BaseEntity {
     cascade: true,
   })
   productSizes: ProductSize[];
+
+  @ManyToMany(() => Discount, (discount) => discount.products)
+  discount: Discount;
 }
