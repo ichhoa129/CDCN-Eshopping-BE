@@ -38,7 +38,8 @@ export class ProductService {
       .createQueryBuilder('products')
       .leftJoinAndSelect('products.category', 'category')
       .leftJoinAndSelect('products.productSizes', 'productSizes')
-      .leftJoinAndSelect('productSizes.size', 'size');
+      .leftJoinAndSelect('productSizes.size', 'size')
+      .leftJoinAndSelect('products.discount', 'discount');
 
     productFilters.forEach((item, index) => {
       item.column =
@@ -68,9 +69,19 @@ export class ProductService {
       );
     });
 
-    return new ResponseTransfomer(queryBuilder).paginationResponseTransform(
-      paginationOptions,
-    );
+    const res = await new ResponseTransfomer(
+      queryBuilder,
+    ).paginationResponseTransform(paginationOptions);
+    const currentDate = new Date();
+
+    res.items.forEach((product) => {
+      product.discount = product.discount.filter(
+        (discount) =>
+          discount.startDate <= currentDate && discount.endDate > currentDate,
+      );
+    });
+
+    return res;
   }
 
   async findOneBySlug(slug: string): Promise<Product> {
@@ -83,6 +94,13 @@ export class ProductService {
     if (!product) {
       throw new NotFoundException(`Product with slug ${slug} not found`);
     }
+
+    const currentDate = new Date();
+
+    product.discount = (product.discount as any).filter(
+      (discount) =>
+        discount.startDate <= currentDate && discount.endDate >= currentDate,
+    );
 
     return product;
   }

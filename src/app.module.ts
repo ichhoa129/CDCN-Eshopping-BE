@@ -6,6 +6,7 @@ import { CacheModule, Module } from '@nestjs/common';
 import { CategoryModule } from '@app/category/category.module';
 import { SizeModule } from './modules/size/size.module';
 import { ProductSizeModule } from './modules/product_size/product_size.module';
+import { DiscountModule } from '@app/discount/discount.module';
 import * as redisStore from 'cache-manager-redis-store';
 
 @Module({
@@ -23,6 +24,7 @@ import * as redisStore from 'cache-manager-redis-store';
     CategoryModule,
     SizeModule,
     ProductSizeModule,
+    DiscountModule,
   ],
   controllers: [],
   providers: [],
