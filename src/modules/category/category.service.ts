@@ -1,6 +1,6 @@
 import { ResponseTransfomer } from '@core/transform/response.transform';
+import { Sort } from '@eshopping/helper-package';
 import { Inject, Injectable, NotFoundException } from '@nestjs/common';
-import { Sort } from 'src/common/class/sort';
 import { IFilterOptions } from 'src/common/interface/filter-options.interface';
 import { IPaginationOptions } from 'src/common/interface/pagination-options.interface';
 import { In, Repository } from 'typeorm';
