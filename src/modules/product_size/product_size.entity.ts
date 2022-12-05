@@ -1,4 +1,5 @@
 import { Product } from '@app/product/product.entity';
+import { ReceiptProduct } from '@app/receipt/receipt.entity';
 import { Size } from '@app/size/size.entity';
 import { BaseEntity } from '@core/base/base.entity';
 import {
@@ -43,4 +44,7 @@ export class ProductSize extends BaseEntity {
   @ManyToOne(() => Size, (size) => size.productSize)
   @JoinColumn({ name: 'size_id' })
   size: Size;
+
+  @OneToMany(() => ReceiptProduct, (receiptProduct) => receiptProduct.receipt)
+  receiptProducts: ReceiptProduct[];
 }
