@@ -7,6 +7,7 @@ import { CategoryModule } from '@app/category/category.module';
 import { SizeModule } from './modules/size/size.module';
 import { ProductSizeModule } from './modules/product_size/product_size.module';
 import { DiscountModule } from '@app/discount/discount.module';
+import { ReceiptModule } from '@app/receipt/receipt.module';
 import * as redisStore from 'cache-manager-redis-store';
 
 @Module({
@@ -25,6 +26,7 @@ import * as redisStore from 'cache-manager-redis-store';
     SizeModule,
     ProductSizeModule,
     DiscountModule,
+    ReceiptModule,
   ],
   controllers: [],
   providers: [],
