@@ -1,3 +1,4 @@
+import { OrderItem } from '@app/order_item/order-item.entity';
 import { Product } from '@app/product/product.entity';
 import { ReceiptProduct } from '@app/receipt/receipt.entity';
 import { Size } from '@app/size/size.entity';
@@ -47,4 +48,6 @@ export class ProductSize extends BaseEntity {
 
   @OneToMany(() => ReceiptProduct, (receiptProduct) => receiptProduct.receipt)
   receiptProducts: ReceiptProduct[];
+  @OneToMany(() => OrderItem, (orderItem) => orderItem.productSize)
+  orderItems: OrderItem[];
 }
