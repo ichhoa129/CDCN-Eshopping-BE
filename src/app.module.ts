@@ -11,6 +11,7 @@ import { PaymentModule } from '@app/payment/payment.module';
 import { DiscountModule } from '@app/discount/discount.module';
 import { ReceiptModule } from '@app/receipt/receipt.module';
 import * as redisStore from 'cache-manager-redis-store';
+import { ImageModule } from '@app/image/image.module';
 
 @Module({
   imports: [
@@ -31,6 +32,7 @@ import * as redisStore from 'cache-manager-redis-store';
     PaymentModule,
     DiscountModule,
     ReceiptModule,
+    ImageModule,
   ],
   controllers: [],
   providers: [],

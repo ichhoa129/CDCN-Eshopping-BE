@@ -11,6 +11,7 @@ import { BaseEntity } from '@core/base/base.entity';
 import { Category } from '@app/category/category.entity';
 import { PRODUCT_STATUS } from 'src/common/enums/product.enum';
 import { ProductSize } from '@app/product_size/product_size.entity';
+import { Image } from '@app/image/image.entity';
 import { Discount } from '@app/discount/discount.entity';
 
 @Entity('products')
@@ -86,6 +87,22 @@ export class Product extends BaseEntity {
     cascade: true,
   })
   productSizes: ProductSize[];
+
+  @ManyToMany(() => Image, {
+    cascade: true,
+  })
+  @JoinTable({
+    name: 'products_images',
+    joinColumn: {
+      name: 'product_id',
+      referencedColumnName: 'id',
+    },
+    inverseJoinColumn: {
+      name: 'image_id',
+      referencedColumnName: 'id',
+    },
+  })
+  images: Image[];
 
   @ManyToMany(() => Discount, (discount) => discount.products)
   discount: Discount;
