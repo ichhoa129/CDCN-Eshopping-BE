@@ -37,6 +37,38 @@ import { UpdateOrderDto } from './dto/update-order.dto';
 export class OrderController {
   constructor(public orderService: OrderService) {}
 
+  @Get('mine')
+  @AuthorizeGuard([USER_ROLE.USER])
+  @ApiOperation({
+    summary: 'Get all orders by user',
+  })
+  @ApiQuery({
+    name: 'page',
+    required: false,
+    type: Number,
+    description: 'Default: 1',
+  })
+  @ApiQuery({
+    name: 'limit',
+    required: false,
+    type: Number,
+    description: 'Default: 10',
+  })
+  @ApiResponse({ status: HttpStatus.OK, description: 'Get all orders' })
+  @ApiResponse({ status: HttpStatus.UNAUTHORIZED, description: 'Unauthorized' })
+  @ApiResponse({ status: HttpStatus.OK, description: 'Get all orders' })
+  async findAllByUser(
+    @Request() req: any,
+    @Query('page', new DefaultValuePipe(1), ParseIntPipe) page = 1,
+    @Query('limit', new DefaultValuePipe(10), ParseIntPipe) limit = 10,
+  ) {
+    const data = await this.orderService.findAllByUser(req.user.email, {
+      page,
+      limit,
+    });
+    return ValidHttpResponse.toOkResponse(data);
+  }
+
   @Get()
   @AuthorizeGuard([USER_ROLE.ADMIN])
   @ApiOperation({

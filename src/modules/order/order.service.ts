@@ -31,6 +31,24 @@ export class OrderService {
     private paymentService: PaymentService,
   ) {}
 
+  async findAllByUser(userEmail: string, pagination: IPaginationOptions) {
+    const user = await this.userRepository.findOneByOrFail({
+      email: userEmail,
+    });
+    const queryBuilder = this.orderRepository
+      .createQueryBuilder('order')
+      .leftJoinAndSelect('order.orderItems', 'orderItem')
+      .leftJoinAndSelect('orderItem.productSize', 'productSize')
+      .leftJoinAndSelect('productSize.product', 'product')
+      .leftJoinAndSelect('productSize.size', 'size')
+      .leftJoinAndSelect('product.images', 'images')
+      .where('order.user_id = :userId', { userId: user.id });
+
+    return new ResponseTransfomer(queryBuilder).paginationResponseTransform(
+      pagination,
+    );
+  }
+
   async findAll(
     filterOptions: IFilterOptions,
     paginationOptions: IPaginationOptions,
