@@ -40,4 +40,8 @@ export class CreateProductDto {
   @IsArray()
   @ArrayNotEmpty()
   sizes: QuantityOfSize[];
+
+  @ApiProperty()
+  @IsArray()
+  images: string[];
 }
