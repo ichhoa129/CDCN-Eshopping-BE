@@ -1,10 +1,9 @@
 import { CategoryService } from '@app/category/category.service';
+import { Image } from '@app/image/image.entity';
 import { ProductSize } from '@app/product_size/product_size.entity';
-import { ProductSizeService } from '@app/product_size/product_size.service';
-import { SizeService } from '@app/size/size.service';
 import { ResponseTransfomer } from '@core/transform/response.transform';
-import { Filter, FilterSign, Sort } from '@eshopping/helper-package';
 import { Inject, Injectable, NotFoundException } from '@nestjs/common';
+import { Filter, Sort, FilterSign } from '@eshopping/helper-package';
 import { PRODUCT_STATUS } from 'src/common/enums/product.enum';
 import { IFilterOptions } from 'src/common/interface/filter-options.interface';
 import { IPaginationOptions } from 'src/common/interface/pagination-options.interface';
@@ -39,6 +38,7 @@ export class ProductService {
       .leftJoinAndSelect('products.category', 'category')
       .leftJoinAndSelect('products.productSizes', 'productSizes')
       .leftJoinAndSelect('productSizes.size', 'size')
+      .leftJoinAndSelect('products.images', 'images')
       .leftJoinAndSelect('products.discount', 'discount');
 
     productFilters.forEach((item, index) => {
@@ -87,7 +87,13 @@ export class ProductService {
   async findOneBySlug(slug: string): Promise<Product> {
     const options = {
       where: { slug },
-      relations: ['category', 'productSizes', 'productSizes.size', 'discount'],
+      relations: [
+        'category',
+        'productSizes',
+        'productSizes.size',
+        'images',
+        'discount',
+      ],
     };
     const product = await this.productRepository.findOne(options);
 
@@ -130,7 +136,7 @@ export class ProductService {
   }
 
   async createOne(createProductDto: CreateProductDto): Promise<void> {
-    const { name, description, price, unit, categoryId, sizes } =
+    const { name, description, price, unit, categoryId, sizes, images } =
       createProductDto;
 
     await this.productRepository.manager.transaction(async (manager) => {
@@ -143,8 +149,17 @@ export class ProductService {
       product.status = PRODUCT_STATUS.ACTIVE;
       product.categoryId = categoryId;
       product.stock = 0;
+      product.images = [];
 
       const createdProduct = await manager.save(Product, product);
+
+      const newImages = images.map((image) => {
+        const newImage = new Image();
+        newImage.url = image;
+        return newImage;
+      });
+
+      const createdImages = await manager.save(Image, newImages);
 
       let totalStock = 0;
       const productSizes = sizes.map((size) => {
@@ -155,6 +170,9 @@ export class ProductService {
         };
       });
 
+      createdImages.forEach((item) => {
+        createdProduct.images.push(item);
+      });
       createdProduct.stock = totalStock;
 
       await manager.save(ProductSize, productSizes);
