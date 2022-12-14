@@ -1,6 +1,7 @@
-import { Entity, Column } from 'typeorm';
+import { Entity, Column, OneToMany } from 'typeorm';
 import { USER_ROLE } from 'src/common/enums/user.enum';
 import { BaseEntity } from '@core/base/base.entity';
+import { Order } from '@app/order/order.entity';
 
 @Entity('users')
 export class User extends BaseEntity {
@@ -32,6 +33,9 @@ export class User extends BaseEntity {
 
   @Column({ name: 'avatar_url', type: 'varchar', length: 255, nullable: true })
   avatarUrl: string;
+
+  @OneToMany(() => Order, (order) => order.user)
+  orders: Order[];
 
   @Column({ type: 'boolean', default: true })
   status: boolean;

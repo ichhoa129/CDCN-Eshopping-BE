@@ -1,4 +1,4 @@
-import { Pagination } from 'src/common/class';
+import { Pagination } from '@eshopping/helper-package';
 import { IPaginationOptions } from 'src/common/interface/pagination-options.interface';
 
 export class ResponseTransfomer {
