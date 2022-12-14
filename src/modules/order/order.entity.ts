@@ -10,7 +10,7 @@ import { BaseEntity } from '@core/base/base.entity';
 import { User } from '@app/user/user.entity';
 import { OrderItem } from '@app/order_item/order-item.entity';
 import { Payment } from '@app/payment/payment.entity';
-import { ColumnNumericTransformer } from 'src/common/class/numeric';
+import { ColumnNumericTransformer } from '@eshopping/helper-package';
 
 @Entity('orders')
 export class Order extends BaseEntity {

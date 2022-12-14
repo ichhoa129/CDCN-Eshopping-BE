@@ -2,7 +2,7 @@ import { Column, Entity, JoinColumn, ManyToOne } from 'typeorm';
 import { BaseEntity } from '@core/base/base.entity';
 import { Order } from '@app/order/order.entity';
 import { ProductSize } from '@app/product_size/product_size.entity';
-import { ColumnNumericTransformer } from 'src/common/class/numeric';
+import { ColumnNumericTransformer } from '@eshopping/helper-package';
 
 @Entity('order_items')
 export class OrderItem extends BaseEntity {
