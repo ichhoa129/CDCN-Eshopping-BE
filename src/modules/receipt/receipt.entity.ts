@@ -8,7 +8,7 @@ import {
   ManyToOne,
   OneToMany,
 } from 'typeorm';
-import { ColumnNumericTransformer } from 'src/common/class/numeric';
+import { ColumnNumericTransformer } from '@eshopping/helper-package';
 
 @Entity('receipts')
 export class Receipt extends BaseEntity {

@@ -1,6 +1,6 @@
 import { Order } from '@app/order/order.entity';
 import { BaseEntity } from '@core/base/base.entity';
-import { ColumnNumericTransformer } from 'src/common/class/numeric';
+import { ColumnNumericTransformer } from '@eshopping/helper-package';
 import { Column, Entity, OneToOne } from 'typeorm';
 
 @Entity('payments')
